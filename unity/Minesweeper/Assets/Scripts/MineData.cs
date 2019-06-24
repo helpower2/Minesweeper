@@ -101,7 +101,7 @@ public class MineData : MonoBehaviour
         {
             spriteRenderer.sprite = SpriteReverence._instance.sprites[totalbombsNearby];
 
-            spriteRenderer.SetColor(Color.Lerp(Color.white, Color.red,(float) (totalbombsNearby / 9f)));
+            spriteRenderer.SetColor(Color.Lerp(Color.white, Color.red,(float) (totalbombsNearby / 5f)));
         }
         if (spriteRenderer.sprite == null && !this.isRevealed)
         {
