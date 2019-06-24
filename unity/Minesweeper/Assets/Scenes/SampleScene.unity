@@ -267,7 +267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   with: 20
   hight: 20
-  bombCount: 50
+  bombCount: 20
   prefab: {fileID: 1561520379515864097, guid: 4699430399ba36d42aa98db9d5f4d1b3, type: 3}
   map: {fileID: 877238177}
   DebugMode: 0
@@ -387,6 +387,7 @@ MonoBehaviour:
     m_TypeName: UnityMineDataEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   mainCamare: {fileID: 519420031}
+  camareScale: 1.8
 --- !u!4 &1415147930
 Transform:
   m_ObjectHideFlags: 0

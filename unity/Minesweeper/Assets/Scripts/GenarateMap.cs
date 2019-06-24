@@ -19,6 +19,8 @@ public class GenarateMap : Singleton<GenarateMap>
     public MineData[,] MineDatas { get { return mineDatas; } private set { mineDatas = value; } }
 
 
+
+
     public void GenerateMap()
     {
         MineDatas = new MineData[with, hight];

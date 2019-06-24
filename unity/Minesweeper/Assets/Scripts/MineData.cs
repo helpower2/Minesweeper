@@ -19,6 +19,38 @@ public class MineData : MonoBehaviour
         StartCoroutine(GetTotalbombsNearby());
     }
 
+    public void showNullNeighbors()
+    {
+        foreach (var item in GetNeighbors())
+        {
+            if (item == null) continue;
+            if (item.isRevealed || item.isBomb || item.totalbombsNearby != 0) continue;
+            item.showNullNeighbors();
+        }
+    }
+
+    public void Reveal()
+    {
+        isRevealed = true;
+        UpdateGraphics();
+    }
+    public MineData[,] GetNeighbors()
+    {
+        var map = GenarateMap.Instance().MineDatas;
+        MineData[,] temp = new MineData[3,3];
+        for (int W = localPos.x - 1, w = 0; W <= localPos.x + 1; W++, w++)
+        {
+            for (int H = localPos.y - 1, h = 0; H <= localPos.y + 1; H++, h++)
+            {
+                if ((H >= 0 && W >= 0) && (W < map.GetLength(0) && H < map.GetLength(1)))
+                {
+                    temp[w, h] = map[W, H];
+                }
+            }
+        }
+        return temp;
+    }
+
     public IEnumerator GetTotalbombsNearby()
     {
         yield return 0;
@@ -35,10 +67,7 @@ public class MineData : MonoBehaviour
                 for (int H = localPos.y - 1; H <= localPos.y + 1; H++)
                 {
                     if ((H >= 0 && W >= 0) && (W < map.GetLength(0) && H < map.GetLength(1)))
-                    {
-                        //-1 , -1 kan er door komen. HOE??
-                        //we are looking in the map 
-                        //Debug.Log(W + " " + H);
+                    {                        //Debug.Log(W + " " + H);
                         if (map[W, H].isBomb)
                         {
                             totalbombsNearby++;
@@ -73,6 +102,10 @@ public class MineData : MonoBehaviour
             spriteRenderer.sprite = SpriteReverence._instance.sprites[totalbombsNearby];
 
             spriteRenderer.SetColor(Color.Lerp(Color.white, Color.red,(float) (totalbombsNearby / 9f)));
+        }
+        if (spriteRenderer.sprite == null && !this.isRevealed)
+        {
+            spriteRenderer.SetColor(Color.gray);
         }
     }
 }

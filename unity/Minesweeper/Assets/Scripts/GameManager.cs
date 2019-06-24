@@ -41,6 +41,10 @@ public class GameManager : Singleton<GameManager>
     {
         mineData.isRevealed = true;
         mineData.UpdateGraphics();
+        if (mineData.totalbombsNearby == 0)
+        {
+            mineData.showNullNeighbors();
+        }
     }
 
     public void RevealAllMinedatas()
