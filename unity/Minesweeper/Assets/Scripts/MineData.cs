@@ -21,11 +21,14 @@ public class MineData : MonoBehaviour
 
     public void showNullNeighbors()
     {
+        if (isBomb || totalbombsNearby != 0) return;
         foreach (var item in GetNeighbors())
         {
             if (item == null) continue;
             if (item.isRevealed || item.isBomb || item.totalbombsNearby != 0) continue;
+            item.Reveal();
             item.showNullNeighbors();
+           
         }
     }
 
