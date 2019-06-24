@@ -39,7 +39,7 @@ public class GenarateMap : Singleton<GenarateMap>
     }
     public void FillMap()
     {
-        if (hight * with <= bombCount) Debug.LogError("Tomany bombs");
+        if (hight * with <= bombCount) Debug.LogError("Too many bombs");
         for (int i = 0; i < bombCount; i++)
         {
             ActivateRandomeMine();
