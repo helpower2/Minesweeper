@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GenarateMap : Singleton<GenarateMap>
 {
@@ -10,6 +12,7 @@ public class GenarateMap : Singleton<GenarateMap>
     public GameObject prefab;
     public Transform map;
     public bool DebugMode = false;
+    public UnityEvent onMapGenerate = new UnityEvent();
 
 
     [SerializeField] private MineData[,] mineDatas;
@@ -19,7 +22,7 @@ public class GenarateMap : Singleton<GenarateMap>
     public void GenerateMap()
     {
         MineDatas = new MineData[with, hight];
-        map.DestroyChilds();//kill the earth
+        map.DestroyChilds(); //kill the earth
         for (int h = 0; h < hight; h++)
         {
             for (int w = 0; w < with; w++)
@@ -32,14 +35,16 @@ public class GenarateMap : Singleton<GenarateMap>
             }
         }
         FillMap();
+        onMapGenerate.Invoke();
     }
     public void FillMap()
     {
         if (hight * with <= bombCount) Debug.LogError("Tomany bombs");
         for (int i = 0; i < bombCount; i++)
         {
-
+            ActivateRandomeMine();
         }
+        MineDatas.OfType<MineData>().ToList().ForEach((x) => { x.StartBombCount(); x.UpdateGraphics(); });
     }
     public void ActivateRandomeMine()
     {

@@ -9,6 +9,9 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private ClickManager clickManager;
     public UnityMineDataEvent OnMineDataHit = new UnityMineDataEvent();
     public UnityMineDataEvent OnBombHit = new UnityMineDataEvent();
+    public Camera mainCamare;
+    public float camareScale = 1.8f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +55,11 @@ public class GameManager : Singleton<GameManager>
     {
         RevealAllMinedatas();
     }
+    public void SetCamera()
+    {
+        mainCamare.orthographicSize = Mathf.Max(mapGenaretor.with, mapGenaretor.hight) / camareScale;
+    }
+
 }
 [System.Serializable]
 public class UnityMineDataEvent : UnityEvent<MineData> { }
