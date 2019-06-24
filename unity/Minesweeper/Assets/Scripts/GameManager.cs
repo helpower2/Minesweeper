@@ -32,9 +32,12 @@ public class GameManager : Singleton<GameManager>
     {
         var minedata = clickable.GetComponent<MineData>();
         if (minedata == null) return;
+        if (minedata.isRevealed) return;
         OnMineDataHit.Invoke(minedata);
         if (minedata.isBomb) OnBombHit.Invoke(minedata);
 
+        ScoreManager scoreManager = ScoreManager.Instance();
+        scoreManager.score+=1;
     }
 
     public void RevealMineData(MineData mineData)
