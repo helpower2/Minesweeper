@@ -16,7 +16,7 @@ public class GenarateMap : Singleton<GenarateMap>
 
 
     [SerializeField] private MineData[,] mineDatas;
-    public MineData[,] MineDatas { get { return mineDatas; } private set { mineDatas = value; } }
+    public MineData[,] MineDatas { get { return mineDatas; }  set { mineDatas = value; } }
 
 
 
@@ -25,6 +25,12 @@ public class GenarateMap : Singleton<GenarateMap>
     {
         MineDatas = new MineData[with, hight];
         map.DestroyChilds(); //kill the earth
+        GenerateEmptyMap();
+        FillMap();
+        onMapGenerate.Invoke();
+    }
+    public void GenerateEmptyMap()
+    {
         for (int h = 0; h < hight; h++)
         {
             for (int w = 0; w < with; w++)
@@ -36,8 +42,6 @@ public class GenarateMap : Singleton<GenarateMap>
                 data.localPos = new Vector2Int(h, w);
             }
         }
-        FillMap();
-        onMapGenerate.Invoke();
     }
     public void FillMap()
     {

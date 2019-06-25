@@ -11,10 +11,8 @@ public class ScoreManager : Singleton<ScoreManager>
     {
         GameManager.Instance();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void IncreaseScore(int score = 1)
     {
-        
+        score += score;
     }
 }

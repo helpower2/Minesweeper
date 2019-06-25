@@ -1,0 +1,7 @@
+//the GameManager will contain and controll the most importand things like the map genarater, clickmanager, camera, onMinedataHit, OnbombHit
+//in the start it will get all of the importand things. and genarete the base map
+//onclickable will take the gameobject of the clickmanager.onclick and use it to get the MineData and invoke the onMineDataHit and OnbombHit acoringly 
+//the RevealMineData takes the onMineDataHit and reveal the data or bomb
+//the RevealAllMinedatas reveals the whole map and is triggert with OnbombHit.
+//the SetCamera function is run when the map is generated.
+

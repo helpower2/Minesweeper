@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Saving;
 using UnityEngine;
 [RequireComponent(typeof(Clickable))]
 public class MineData : MonoBehaviour
@@ -110,5 +112,12 @@ public class MineData : MonoBehaviour
         {
             spriteRenderer.SetColor(Color.gray);
         }
+    }
+
+    public void LoadMineDataSave(SaveFile.MineDataSave mineDataSave)
+    {
+        isBomb = mineDataSave.isBomb;
+        isRevealed = mineDataSave.isRevealed;
+        totalbombsNearby = mineDataSave.totalbombsNearby;
     }
 }

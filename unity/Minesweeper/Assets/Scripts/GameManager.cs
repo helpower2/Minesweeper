@@ -5,16 +5,19 @@ using UnityEngine.Events;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private GenarateMap mapGenaretor;
-    [SerializeField] private ClickManager clickManager;
+    public GenarateMap mapGenaretor;
+    public ClickManager clickManager;
+    public ScoreManager scoreManager;
     public UnityMineDataEvent OnMineDataHit = new UnityMineDataEvent();
     public UnityMineDataEvent OnBombHit = new UnityMineDataEvent();
+    public string levelName;
     public Camera mainCamare;
     public float camareScale = 1.8f;
 
     // Start is called before the first frame update
     void Start()
     {
+        scoreManager = ScoreManager.Instance();
         if (clickManager == null) clickManager = GetComponent<ClickManager>();
         clickManager.OnClick.AddListener(Onclickable);
         if (mapGenaretor == null)
@@ -29,15 +32,12 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void Onclickable(GameObject clickable)
-    {
+    { 
         var minedata = clickable.GetComponent<MineData>();
         if (minedata == null) return;
         if (minedata.isRevealed) return;
         OnMineDataHit.Invoke(minedata);
         if (minedata.isBomb) OnBombHit.Invoke(minedata);
-
-        ScoreManager scoreManager = ScoreManager.Instance();
-        scoreManager.score+=1;
     }
 
     public void RevealMineData(MineData mineData)
@@ -54,10 +54,6 @@ public class GameManager : Singleton<GameManager>
     {
         mapGenaretor.MineDatas.OfType<MineData>().ToList().ForEach((x) => { RevealMineData(x); });
     }
-    public void delay()
-    {
-        //Delayer.Instance().SetDelay(1, RevealAllMinedatas);
-    }
     public void RevealAllMinedatas(MineData mineData)
     {
         RevealAllMinedatas();
@@ -70,3 +66,13 @@ public class GameManager : Singleton<GameManager>
 }
 [System.Serializable]
 public class UnityMineDataEvent : UnityEvent<MineData> { }
+
+
+
+//the GameManager will contain and controll the most importand things like the map genarater, clickmanager, camera, onMinedataHit, OnbombHit
+//in the start it will get all of the importand things. and genarete the base map
+//onclickable will take the gameobject of the clickmanager.onclick and use it to get the MineData and invoke the onMineDataHit and OnbombHit acoringly 
+//the RevealMineData takes the onMineDataHit and reveal the data or bomb
+//the RevealAllMinedatas reveals the whole map and is triggert with OnbombHit.
+//the SetCamera function is run when the map is generated.
+
