@@ -70,7 +70,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void SetCamera()
     {
-        mainCamare.orthographicSize = Mathf.Max(mapGenaretor.with, mapGenaretor.hight) / camareScale;
+        mainCamare.orthographicSize = Mathf.Max(mapGenaretor.width, mapGenaretor.heigth) / camareScale;
     }
 
     public void ToggleFlag(MineData mineData)
