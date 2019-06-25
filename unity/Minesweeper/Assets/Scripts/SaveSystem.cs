@@ -156,13 +156,13 @@ namespace Saving
             public Level(GameManager gameManager)
             {
                 this.levelName = gameManager.levelName;
-                with = gameManager.mapGenaretor.with;
-                hight = gameManager.mapGenaretor.hight;
+                with = gameManager.mapGenaretor.width;
+                hight = gameManager.mapGenaretor.heigth;
                 bombCount = gameManager.mapGenaretor.bombCount;
                 level = new MineDataSave[gameManager.mapGenaretor.with * gameManager.mapGenaretor.hight];
                 for (int w = 0; w < gameManager.mapGenaretor.with; w++)
                 {
-                    for (int h = 0; h < gameManager.mapGenaretor.hight; h++)
+                    for (int h = 0; h < gameManager.mapGenaretor.heigth; h++)
                     {
                         level[gameManager.mapGenaretor.with * w + h] = gameManager.mapGenaretor.MineDatas[w, h];
                     }
@@ -187,8 +187,8 @@ namespace Saving
         {
             GameManager gameManager = GameManager.Instance();
             gameManager.levelName = level.levelName;
-            gameManager.mapGenaretor.with = level.with;
-            gameManager.mapGenaretor.hight = level.hight;
+            gameManager.mapGenaretor.width = level.with;
+            gameManager.mapGenaretor.heigth = level.hight;
             gameManager.mapGenaretor.bombCount = level.bombCount;
             gameManager.scoreManager.score = level.score;
 

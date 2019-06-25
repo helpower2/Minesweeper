@@ -7,6 +7,7 @@ using UnityEngine;
 public class MineData : MonoBehaviour
 {
     public bool isBomb = false;
+    public bool hasFlag = false;
     public int totalbombsNearby;
     public bool isRevealed = false;
     public Vector2Int localPos;
@@ -93,6 +94,12 @@ public class MineData : MonoBehaviour
     }
     public void UpdateGraphics()
     {
+
+        if (hasFlag)
+        {
+            spriteRenderer.SetSprite(SpriteReverence.Instance().Flag);
+            return;
+        }
         if (!isRevealed)
         {
             spriteRenderer.sprite = SpriteReverence._instance.NotRevealed;
@@ -120,5 +127,12 @@ public class MineData : MonoBehaviour
         isRevealed = mineDataSave.isRevealed;
         totalbombsNearby = mineDataSave.totalbombsNearby;
         UpdateGraphics();
+    }
+
+    public void ToggleFlag()
+    {
+        hasFlag = !hasFlag;
+        UpdateGraphics();
+        FlagManager.Instance().IncreaseFlagCount((hasFlag == true) ?  -1 : 1);
     }
 }

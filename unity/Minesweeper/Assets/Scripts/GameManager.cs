@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
     public ScoreManager scoreManager;
     public UnityMineDataEvent OnMineDataHit = new UnityMineDataEvent();
     public UnityMineDataEvent OnBombHit = new UnityMineDataEvent();
+    public UnityMineDataEvent OnMineDataLeft = new UnityMineDataEvent();
     public string levelName;
     public Camera mainCamare;
     public float camareScale = 1.8f;
@@ -35,9 +36,18 @@ public class GameManager : Singleton<GameManager>
     { 
         var minedata = clickable.GetComponent<MineData>();
         if (minedata == null) return;
-        if (minedata.isRevealed) return;
+        if (minedata.isRevealed || minedata.hasFlag) return;
         OnMineDataHit.Invoke(minedata);
         if (minedata.isBomb) OnBombHit.Invoke(minedata);
+    }
+
+    public void OnLeftclickable(GameObject clickable)
+    {
+
+        var minedata = clickable.GetComponent<MineData>();
+        if (minedata == null) return;
+        if (minedata.isRevealed) return;
+        OnMineDataLeft.Invoke(minedata);
     }
 
     public void RevealMineData(MineData mineData)
@@ -60,12 +70,16 @@ public class GameManager : Singleton<GameManager>
     }
     public void SetCamera()
     {
-        mainCamare.orthographicSize = Mathf.Max(mapGenaretor.with, mapGenaretor.hight) / camareScale;
+        mainCamare.orthographicSize = Mathf.Max(mapGenaretor.width, mapGenaretor.heigth) / camareScale;
     }
 
     public void SetLevelname(string name)
     {
         levelName = name;
+    }
+    public void ToggleFlag(MineData mineData)
+    {
+        mineData.ToggleFlag();
     }
 }
 [System.Serializable]

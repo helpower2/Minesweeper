@@ -6,8 +6,8 @@ using UnityEngine.Events;
 
 public class GenarateMap : Singleton<GenarateMap>
 {
-    public int with = 20;
-    public int hight = 20;
+    public int width = 20;
+    public int heigth = 20;
     public int bombCount = 50;
     public GameObject prefab;
     public Transform map;
@@ -23,19 +23,22 @@ public class GenarateMap : Singleton<GenarateMap>
 
     public void GenerateMap()
     {
-        MineDatas = new MineData[with, hight];
+
+        MineDatas = new MineData[width, heigth];
+        map.DestroyChilds(); //kill the earth
         GenerateEmptyMap();
         FillMap();
         onMapGenerate.Invoke();
     }
     public void GenerateEmptyMap()
     {
+
         map.DestroyChilds(); //kill the earth
-        for (int h = 0; h < hight; h++)
+        for (int h = 0; h < heigth; h++)
         {
-            for (int w = 0; w < with; w++)
+            for (int w = 0; w < width; w++)
             {
-                GameObject go = Instantiate(prefab, new Vector2(h - (hight / 2), w - (with / 2)), Quaternion.identity, map);
+                GameObject go = Instantiate(prefab, new Vector2(h - (heigth / 2), w - (width / 2)), Quaternion.identity, map);
                 go.name += $@"{h}, {w}";
                 MineData data = go.GetComponent<MineData>();
                 MineDatas[h, w] = data;
@@ -45,7 +48,7 @@ public class GenarateMap : Singleton<GenarateMap>
     }
     public void FillMap()
     {
-        if (hight * with <= bombCount) Debug.LogError("Too many bombs");
+        if (heigth * width <= bombCount) Debug.LogError("Too many bombs");
         for (int i = 0; i < bombCount; i++)
         {
             ActivateRandomeMine();
@@ -54,7 +57,7 @@ public class GenarateMap : Singleton<GenarateMap>
     }
     public void ActivateRandomeMine()
     {
-        Vector2Int vec = new Vector2Int(Random.Range(0, hight), Random.Range(0, with));
+        Vector2Int vec = new Vector2Int(Random.Range(0, heigth), Random.Range(0, width));
         MineData mine = MineDatas[vec.x, vec.y];
         if (mine.isBomb)
         {
