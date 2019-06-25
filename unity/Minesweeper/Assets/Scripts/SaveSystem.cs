@@ -3,6 +3,8 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Runtime.Serialization.Formatters.Binary;
 
 //this is for saving the level
 //I(Jeffrey) have made this becuase i'm bored
@@ -11,12 +13,16 @@ namespace Saving
 {
     public class SaveSystem : Singleton<SaveSystem>
     {
+        public Dropdown dropdown;
+        public Text currentlevelText;
         public SaveFile save = new SaveFile();
+        public SaveFile.Level currentLevel;
+        public int currentLevelint;
         private string dataPath;
         // Start is called before the first frame update
         IEnumerator Start()
         {
-            dataPath = Application.dataPath + "\\save.json";
+            dataPath = Application.dataPath + "\\save.bin";
             yield return 0; //wait 1 frame 
             try
             {
@@ -29,6 +35,11 @@ namespace Saving
                 {
                     //try to load file
                     LoadSaveFile();
+                    if (save.levels.Count != 0)
+                    {
+                        currentLevel = save.levels[save.levels.Count - 1];
+                        LoadLevel();
+                    }
                 }
             }
             catch (Exception e)
@@ -36,27 +47,72 @@ namespace Saving
                 Debug.LogError(e.Message);
                 throw;
             }
-            
+            updateGraphics();
         }
 
-        private IEnumerator CreateSaveFile()
+        private void CreateSaveFile()
         {
             FileStream fileStream = File.Create(dataPath);
-            using (StreamWriter streamWriter = new StreamWriter(fileStream))
-            {
-                streamWriter.WriteLine(JsonUtility.ToJson(save));
-            }
-            yield return null;
+            //using (StreamWriter streamWriter = new StreamWriter(fileStream)){streamWriter.WriteLine(JsonUtility.ToJson(save));}
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(fileStream, save);
+            fileStream.Close();
         }
 
         public void LoadSaveFile()
         {
-            JsonUtility.FromJsonOverwrite(File.ReadLines(dataPath).ToString(), save);
-            return;
+            FileStream fileStream = File.OpenRead(dataPath);
+            BinaryFormatter formatter = new BinaryFormatter();
+            save = (SaveFile)formatter.Deserialize(fileStream);
+            fileStream.Close();
+
+            //save = JsonUtility.FromJson<SaveFile>(File.ReadLines(dataPath).ToString());
+            updateGraphics();
         }
         public void SaveSaveFile()
         {
-            File.WriteAllText(dataPath, JsonUtility.ToJson(save));
+            FileStream fileStream = File.OpenWrite(dataPath);
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(fileStream, save);
+            fileStream.Close();
+            updateGraphics();
+        }
+        public void SaveCurrentLevel()
+        {
+            save.SaveLevel();
+            updateGraphics();
+            dropdown.SetValueWithoutNotify(save.levels.Count);
+        }
+        public void SetcurrentLevel(int level)
+        {
+            if (save.levels.Count <= level) return;
+            currentLevel = save.levels[level];
+            currentlevelText.text = currentLevel.ToString();
+            dropdown.SetValueWithoutNotify(level);
+        }
+        public void LoadLevel()
+        {
+            save.loadlevel(currentLevel);
+            updateGraphics();
+            
+        }
+        public void updateGraphics()
+        {
+            dropdown.ClearOptions();
+            List<Dropdown.OptionData> optionDatas = new List<Dropdown.OptionData>();
+            foreach (var item in save.levels)
+            {
+                optionDatas.Add(new Dropdown.OptionData(item.ToString()));
+            }
+            dropdown.AddOptions(optionDatas);
+            dropdown.RefreshShownValue();
+        }
+        public void DeleteLevel()
+        {
+            save.levels.Remove(currentLevel);
+            currentLevel = null;
+            updateGraphics();
+            SaveSaveFile();
         }
     }
     [System.Serializable]
@@ -68,14 +124,17 @@ namespace Saving
             public bool isBomb;
             public int totalbombsNearby;
             public bool isRevealed;
-            public Vector2Int localPos;
 
+            //public Vector2Int localPos;
+            public int localPosW;
+            public int localPosH;
             public MineDataSave(MineData mineData)
             {
                 isBomb = mineData.isBomb;
                 totalbombsNearby = mineData.totalbombsNearby;
                 isRevealed = mineData.isRevealed;
-                localPos = mineData.localPos;
+                localPosW = mineData.localPos.x;
+                localPosH = mineData.localPos.y;
             }
             public static implicit operator MineDataSave(MineData mineData)
             {
@@ -89,7 +148,7 @@ namespace Saving
             public int with;
             public int hight;
             public int bombCount;
-            public MineDataSave[,] level;
+            public MineDataSave[] level;
             public DateTime saveTime;
             public int score;
             public float time;
@@ -100,11 +159,12 @@ namespace Saving
                 with = gameManager.mapGenaretor.with;
                 hight = gameManager.mapGenaretor.hight;
                 bombCount = gameManager.mapGenaretor.bombCount;
-                level = new MineDataSave[gameManager.mapGenaretor.with, gameManager.mapGenaretor.hight]; for (int w = 0; w < gameManager.mapGenaretor.with; w++)
+                level = new MineDataSave[gameManager.mapGenaretor.with * gameManager.mapGenaretor.hight];
+                for (int w = 0; w < gameManager.mapGenaretor.with; w++)
                 {
                     for (int h = 0; h < gameManager.mapGenaretor.hight; h++)
                     {
-                        level[w, h] = gameManager.mapGenaretor.MineDatas[w, h];
+                        level[gameManager.mapGenaretor.with * w + h] = gameManager.mapGenaretor.MineDatas[w, h];
                     }
                 }
                 saveTime = DateTime.Now;
@@ -114,6 +174,10 @@ namespace Saving
             public static implicit operator Level(GameManager gameManager)
             {
                 return new Level(gameManager);
+            }
+            public override string ToString()
+            {
+                return levelName + ", Score " + score;
             }
 
         }
@@ -135,7 +199,7 @@ namespace Saving
                 for (int h = 0; h < level.hight; h++)
                 {
                     MineData mineData = mines[w, h];
-                    mineData.LoadMineDataSave(level.level[w, h]);
+                    mineData.LoadMineDataSave(level.level[level.with * w + h]);
                 }
             }
         }

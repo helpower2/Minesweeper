@@ -27,7 +27,7 @@ public class MineData : MonoBehaviour
         foreach (var item in GetNeighbors())
         {
             if (item == null) continue;
-            if (item.isRevealed || item.isBomb || item.totalbombsNearby != 0) continue;
+            if (item.isRevealed || item.isBomb) continue;
             item.Reveal();
             item.showNullNeighbors();
            
@@ -119,5 +119,6 @@ public class MineData : MonoBehaviour
         isBomb = mineDataSave.isBomb;
         isRevealed = mineDataSave.isRevealed;
         totalbombsNearby = mineDataSave.totalbombsNearby;
+        UpdateGraphics();
     }
 }

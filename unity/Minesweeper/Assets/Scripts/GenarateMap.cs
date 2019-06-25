@@ -24,13 +24,13 @@ public class GenarateMap : Singleton<GenarateMap>
     public void GenerateMap()
     {
         MineDatas = new MineData[with, hight];
-        map.DestroyChilds(); //kill the earth
         GenerateEmptyMap();
         FillMap();
         onMapGenerate.Invoke();
     }
     public void GenerateEmptyMap()
     {
+        map.DestroyChilds(); //kill the earth
         for (int h = 0; h < hight; h++)
         {
             for (int w = 0; w < with; w++)

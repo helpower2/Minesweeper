@@ -63,6 +63,10 @@ public class GameManager : Singleton<GameManager>
         mainCamare.orthographicSize = Mathf.Max(mapGenaretor.with, mapGenaretor.hight) / camareScale;
     }
 
+    public void SetLevelname(string name)
+    {
+        levelName = name;
+    }
 }
 [System.Serializable]
 public class UnityMineDataEvent : UnityEvent<MineData> { }
