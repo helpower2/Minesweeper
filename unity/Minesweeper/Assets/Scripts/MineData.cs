@@ -133,6 +133,6 @@ public class MineData : MonoBehaviour
     {
         hasFlag = !hasFlag;
         UpdateGraphics();
-        FlagManager.Instance().IncreaseFlagCount((hasFlag == true) ?  -1 : 1);
+        FlagManager.Instance()?.IncreaseFlagCount((hasFlag == true) ?  -1 : 1);
     }
 }

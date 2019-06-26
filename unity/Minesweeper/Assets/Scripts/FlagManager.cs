@@ -6,24 +6,22 @@ using UnityEngine.UI;
 public class FlagManager : Singleton<FlagManager>
 {
 
-    public int FlagCounter = 10;
-    public Text flagcount;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        flagcount.text = "" + FlagCounter;
-    }
+    [SerializeField] private int FlagCount = 10;
+    public Text flagcountText;
 
     public void IncreaseFlagCount(int IncreaseFlag = 1)
     {
-        FlagCounter += IncreaseFlag;
-        flagcount.text = "" + FlagCounter;
+        FlagCount += IncreaseFlag;
+
+        flagcountText.text = "" + FlagCount;
+    }
+    public void Restart()
+    {
+        FlagCount = GenarateMap.Instance().bombCount;
+    }
+    public void Start()
+    {
+        Restart();
+        flagcountText.text = "" + FlagCount;
     }
 }
