@@ -24,26 +24,38 @@ public class DifficultyManager : Singleton<DifficultyManager>
 
     public void Beginner()
     {
-        GenarateMap.Instance().width = 9;
-        GenarateMap.Instance().heigth = 9;
-        GenarateMap.Instance().bombCount = 10;
-        GenarateMap.Instance().GenerateMap();
+        width.text = "9";
+        heigth.text = "9";
+        bombs.text = "10";
+        //GenarateMap.Instance().width = 9;
+        //GenarateMap.Instance().heigth = 9;
+        //GenarateMap.Instance().bombCount = 10;
+        Custom();
+        //GenarateMap.Instance().GenerateMap();
     }
 
     public void Intermidate()
     {
-        GenarateMap.Instance().width = 16;
-        GenarateMap.Instance().heigth = 16;
-        GenarateMap.Instance().bombCount = 40;
-        GenarateMap.Instance().GenerateMap();
+        width.text = "16";
+        heigth.text = "16";
+        bombs.text = "40";
+        //GenarateMap.Instance().width = 16;
+        //GenarateMap.Instance().heigth = 16;
+        //GenarateMap.Instance().bombCount = 40;
+        Custom();
+        //GenarateMap.Instance().GenerateMap();
     }
 
     public void Expert()
     {
-        GenarateMap.Instance().width = 30;
-        GenarateMap.Instance().heigth = 16;
-        GenarateMap.Instance().bombCount = 99;
-        GenarateMap.Instance().GenerateMap();
+        width.text = "30";
+        heigth.text = "16";
+        bombs.text = "99";
+        //GenarateMap.Instance().width = 30;
+        //GenarateMap.Instance().heigth = 16;
+        //GenarateMap.Instance().bombCount = 99;
+        Custom();
+        //GenarateMap.Instance().GenerateMap();
     }
 
     public void Custom()
@@ -51,6 +63,6 @@ public class DifficultyManager : Singleton<DifficultyManager>
         int.TryParse(width.text, out GenarateMap.Instance().width);
         int.TryParse(bombs.text, out GenarateMap.Instance().bombCount);
         int.TryParse(heigth.text, out GenarateMap.Instance().heigth);
-        GenarateMap.Instance().GenerateMap();
+        //GenarateMap.Instance().GenerateMap();
     }
 }

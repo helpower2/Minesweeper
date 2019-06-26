@@ -110,7 +110,7 @@ namespace Saving
         public void DeleteLevel()
         {
             save.levels.Remove(currentLevel);
-            currentLevel = null;
+            currentLevel = new SaveFile.Level();
             updateGraphics();
             SaveSaveFile();
         }
@@ -159,12 +159,12 @@ namespace Saving
                 with = gameManager.mapGenaretor.width;
                 hight = gameManager.mapGenaretor.heigth;
                 bombCount = gameManager.mapGenaretor.bombCount;
-                level = new MineDataSave[gameManager.mapGenaretor.with * gameManager.mapGenaretor.hight];
-                for (int w = 0; w < gameManager.mapGenaretor.with; w++)
+                level = new MineDataSave[gameManager.mapGenaretor.width * gameManager.mapGenaretor.heigth];
+                for (int w = 0; w < gameManager.mapGenaretor.width; w++)
                 {
                     for (int h = 0; h < gameManager.mapGenaretor.heigth; h++)
                     {
-                        level[gameManager.mapGenaretor.with * w + h] = gameManager.mapGenaretor.MineDatas[w, h];
+                        level[gameManager.mapGenaretor.heigth * h + w] = gameManager.mapGenaretor.MineDatas[h, w];
                     }
                 }
                 saveTime = DateTime.Now;

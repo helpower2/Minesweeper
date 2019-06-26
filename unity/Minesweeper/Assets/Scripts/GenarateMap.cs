@@ -24,7 +24,7 @@ public class GenarateMap : Singleton<GenarateMap>
     public void GenerateMap()
     {
 
-        MineDatas = new MineData[width, heigth];
+        MineDatas = new MineData[heigth, width];
         map.DestroyChilds(); //kill the earth
         GenerateEmptyMap();
         FillMap();
@@ -38,7 +38,7 @@ public class GenarateMap : Singleton<GenarateMap>
         {
             for (int w = 0; w < width; w++)
             {
-                GameObject go = Instantiate(prefab, new Vector2(h - (heigth / 2), w - (width / 2)), Quaternion.identity, map);
+                GameObject go = Instantiate(prefab, new Vector2( w - (width / 2),h - (heigth / 2)), Quaternion.identity, map);
                 go.name += $@"{h}, {w}";
                 MineData data = go.GetComponent<MineData>();
                 MineDatas[h, w] = data;
