@@ -25,12 +25,16 @@ public class ClickManager : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// Gets the input from mouse and Invokes the OnClick event
+    /// </summary>
     void Update()
     {
 
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("muis");
+            // the first thing he hits with the line it returns
             RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition).origin, direction: Vector2.up);
             if (EventSystem.current != null)
             {
@@ -73,6 +77,7 @@ public class ClickManager : MonoBehaviour
             }
         }
     }
+
 
     public void SetActiveState(int invokeType)
     {

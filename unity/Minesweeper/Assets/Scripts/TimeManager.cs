@@ -9,12 +9,6 @@ public class TimeManager : Singleton<TimeManager>
     public Text Timer;
     public double currentTime = 0.00d;
 
-
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         // de 

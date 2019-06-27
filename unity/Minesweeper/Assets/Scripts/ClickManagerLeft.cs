@@ -7,6 +7,9 @@ using UnityEngine.EventSystems;
 
 public class ClickManagerLeft : Singleton<ClickManagerLeft>
 {
+    // SAME AS CLICKMANAGER.CS BUT LEFT CLICK
+
+
     public EventGameObject OnClick = new EventGameObject();
     public InvokeType active = InvokeType.both;
 
@@ -57,29 +60,6 @@ public class ClickManagerLeft : Singleton<ClickManagerLeft>
                 }
             }
         }
-        /*if (Input.touchCount == 1)
-        {
-            Debug.Log("touch");
-            RaycastHit hitInfo = new RaycastHit();
-            if (Physics2D.Raycast(Camera.main.ScreenPointToRay(Input.GetTouch(0).position), out hitInfo) && Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                Debug.Log("Hit");
-                Clickeble clickeble = hitInfo.transform.GetComponent<Clickeble>();
-                if (clickeble != null)
-                {
-                    print("It's working");
-                    OnClick.Invoke(clickeble.gameObject);
-                    clickeble.OnClick.Invoke();
-                }
-                else
-                {
-                    Debug.Log("clickeble");
-                }
-            }
-        }*/
-
-
-
     }
 
     public void SetActiveState(int invokeType)

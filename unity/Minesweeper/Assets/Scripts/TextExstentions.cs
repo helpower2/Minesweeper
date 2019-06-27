@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-[RequireComponent(typeof(InputField))]
+[RequireComponent(typeof(InputField))] // requires inputfield component to work
 public class TextExstentions : MonoBehaviour
 {
 
     public InputField inputfield;
     // Start is called before the first frame update
+
+    /// <summary>
+    /// adds inputfield component and on OnValueChanged
+    /// </summary>
     void Start()
     {
         inputfield.GetComponent<InputField>();
@@ -16,12 +20,10 @@ public class TextExstentions : MonoBehaviour
         inputfield.onValueChanged.AddListener(OnValueChanged);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// makes sure it only has numbers
+    /// </summary>
+    /// <param name="In"></param>
     public void OnValueChanged(string In)
     {
         string inTester = "";

@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class DifficultyManager : Singleton<DifficultyManager>
 {
+    //GLOBAL FUNCTIONS FOR EVERY DIFFICULTY
+
+
     public InputField width;
     public InputField heigth;
     public InputField bombs;

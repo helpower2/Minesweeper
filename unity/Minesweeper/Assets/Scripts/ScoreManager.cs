@@ -6,11 +6,17 @@ public class ScoreManager : Singleton<ScoreManager>
 {
     public int score = 0;
 
-    // Start is called before the first frame update
+    
+
     void Start()
     {
         GameManager.Instance();
     }
+
+    /// <summary>
+    /// score for every good block clicked
+    /// </summary>
+    /// <param name="score"></param>
     public void IncreaseScore(int score = 1)
     {
         score += score;

@@ -11,6 +11,9 @@ public class SpriteReverence : Singleton<SpriteReverence>
     public Sprite deadSmiley;
     public List<Sprite> sprites = new List<Sprite>(8);
 
+    /// <summary>
+    /// _instance vult hij en maakt de functie sneller
+    /// </summary>
     private void Awake()
     {
         SpriteReverence.Instance();
