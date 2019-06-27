@@ -30,24 +30,24 @@ public class ClickManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("muis");
+            //Debug.Log("muis");
             RaycastHit2D hitInfo = Physics2D.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition).origin, direction: Vector2.up);
             if (EventSystem.current != null)
             {
                 if (EventSystem.current.IsPointerOverGameObject())    // is the touch on the GUI
                 {
                     // GUI Action
-                    Debug.Log("hIT");
+                    //Debug.Log("hIT");
                     return;
                 }
             }
             if (hitInfo.transform != null)
             {
-                Debug.Log("Hit");
+                //Debug.Log("Hit");
                 Clickable clickeble = hitInfo.transform.GetComponent<Clickable>();
                 if (clickeble != null)
                 {
-                    print("It's working");
+                    //print("It's working");
                     switch (active)
                     {
                         case InvokeType.Clickmanager:
@@ -68,7 +68,7 @@ public class ClickManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("clickeble");
+                    //Debug.Log("clickeble");
                 }
             }
         }
