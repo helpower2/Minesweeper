@@ -14,6 +14,7 @@ public class GameManager : Singleton<GameManager>
     public string levelName;
     public Camera mainCamare;
     public float camareScale = 1.8f;
+    public bool won = true;
 
     // Start is called before the first frame update
     void Start()
@@ -27,11 +28,17 @@ public class GameManager : Singleton<GameManager>
         }
         startGame();
     }
+    /// <summary>
+    /// deze functie generate de map
+    /// </summary>
     public void startGame()
     {
         mapGenaretor.GenerateMap();
     }
-
+    /// <summary>
+    /// Invoke OnMineDataHit and OnBombHit arccordingly
+    /// </summary>
+    /// <param name="clickable"></param>
     public void Onclickable(GameObject clickable)
     { 
         var minedata = clickable.GetComponent<MineData>();
@@ -41,6 +48,10 @@ public class GameManager : Singleton<GameManager>
         if (minedata.isBomb) OnBombHit.Invoke(minedata);
     }
 
+    /// <summary>
+    /// Invokes OnMineDataLeft and will place a flag
+    /// </summary>
+    /// <param name="clickable"></param>
     public void OnLeftclickable(GameObject clickable)
     {
 
@@ -80,6 +91,24 @@ public class GameManager : Singleton<GameManager>
     public void ToggleFlag(MineData mineData)
     {
         mineData.ToggleFlag();
+    }
+
+    public void WinFunction(MineData mineData)
+    {
+        
+        mapGenaretor.MineDatas.OfType<MineData>().ToList().ForEach((x) => { if (x.isBomb == true && x.isRevealed == false || x.isBomb == false && x.isRevealed == true) {  } else { won = false; } });
+        if (won)
+        {
+            Debug.Log("you won");
+            GetComponent<ClickManager>().enabled = false;
+            GetComponent<ClickManagerLeft>().enabled = false;
+
+        }
+    }
+
+    public void QuitFunction()
+    {
+        Application.Quit();
     }
 }
 [System.Serializable]

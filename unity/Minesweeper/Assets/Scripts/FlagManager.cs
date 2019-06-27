@@ -17,6 +17,13 @@ public class FlagManager : Singleton<FlagManager>
     }
     public void Restart()
     {
+        GameManager.Instance().won = true;
+
+        if(GameManager.Instance().won == true)
+        {
+            GetComponent<ClickManager>().enabled = true;
+            GetComponent<ClickManagerLeft>().enabled = true;
+        }
         FlagCount = GenarateMap.Instance().bombCount;
     }
     public void Start()
