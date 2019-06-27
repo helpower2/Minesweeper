@@ -13,11 +13,11 @@ public class GameManager : Singleton<GameManager>
     public UnityMineDataEvent OnBombHit = new UnityMineDataEvent();
     public UnityMineDataEvent OnMineDataLeft = new UnityMineDataEvent();
     public UnityEvent OnRestart = new UnityEvent();
+    public UnityEvent OnWon = new UnityEvent();
     public int MineshitThisGame = 0;
     public string levelName;
     public Camera mainCamare;
     public float camareScale = 1.8f;
-    public bool won = true;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +25,8 @@ public class GameManager : Singleton<GameManager>
         scoreManager = ScoreManager.Instance();
         if (clickManager == null) clickManager = GetComponent<ClickManager>();
         clickManager.OnClick.AddListener(Onclickable);
+        OnMineDataHit.AddListener(delegate { scoreManager.IncreaseScore(1); } );
+        OnBombHit.AddListener(delegate { scoreManager.IncreaseScore(-1); } );
         if (mapGenaretor == null)
         {
             //Debug.LogError("mapGenaretor ");
@@ -42,6 +44,9 @@ public class GameManager : Singleton<GameManager>
     public void Restart()
     {
         OnRestart.Invoke();
+        clickManager.enabled = true;
+        ClickManagerLeft.Instance().enabled = true;
+
     }
     
     public void ResetMineHits()
@@ -119,16 +124,17 @@ public class GameManager : Singleton<GameManager>
     /// Win function if everything is filled except the bombs.
     /// </summary>
     /// <param name="mineData"></param>
-    public void WinFunction(MineData mineData)
+    public void WinFunction()
     {
-        
-        mapGenaretor.MineDatas.OfType<MineData>().ToList().ForEach((x) => { if (x.isBomb == true && x.isRevealed == false || x.isBomb == false && x.isRevealed == true) {  } else { won = false; } });
-        if (won)
+        Debug.Log("win function");
+        bool _won = true;
+        mapGenaretor.MineDatas.OfType<MineData>().ToList().ForEach((x) => { if ((x.isBomb == true && x.hasFlag == true) || (x.isBomb == false && x.isRevealed == true && x.hasFlag == false)) {  } else { _won = false; } });
+        if (_won)
         {
             Debug.Log("you won");
-            GetComponent<ClickManager>().enabled = false;
-            GetComponent<ClickManagerLeft>().enabled = false;
-
+            clickManager.enabled = false;
+            ClickManagerLeft.Instance().enabled = false;
+            OnWon.Invoke();
         }
     }
 

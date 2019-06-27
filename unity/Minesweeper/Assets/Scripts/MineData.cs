@@ -121,10 +121,12 @@ public class MineData : MonoBehaviour
         if (!isRevealed)
         {
             spriteRenderer.sprite = SpriteReverence.Instance().NotRevealed;
+            return;
         }
-        else if (isBomb)
+        if (isBomb)
         {
             spriteRenderer.sprite = SpriteReverence.Instance().Bomb;
+            return;
             //Debug.Log("Bomb");
         }
         else
@@ -132,10 +134,6 @@ public class MineData : MonoBehaviour
             spriteRenderer.sprite = SpriteReverence.Instance().sprites[totalbombsNearby];
 
             spriteRenderer.SetColor(Color.Lerp(Color.white, Color.red,(float) (totalbombsNearby / 5f)));
-        }
-        if (spriteRenderer.sprite == null && !this.isRevealed)
-        {
-            spriteRenderer.SetColor(Color.gray);
         }
     }
 
@@ -159,6 +157,6 @@ public class MineData : MonoBehaviour
     {
         hasFlag = !hasFlag;
         UpdateGraphics();
-        FlagManager.Instance()?.IncreaseFlagCount((hasFlag == true) ?  -1 : 1);
+        FlagManager.Instance().IncreaseFlagCount((hasFlag == true) ?  -1 : 1);
     }
 }
