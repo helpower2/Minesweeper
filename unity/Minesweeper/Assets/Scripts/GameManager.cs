@@ -11,6 +11,8 @@ public class GameManager : Singleton<GameManager>
     public UnityMineDataEvent OnMineDataHit = new UnityMineDataEvent();
     public UnityMineDataEvent OnBombHit = new UnityMineDataEvent();
     public UnityMineDataEvent OnMineDataLeft = new UnityMineDataEvent();
+    public UnityEvent OnRestart = new UnityEvent();
+    public int MineshitThisGame = 0;
     public string levelName;
     public Camera mainCamare;
     public float camareScale = 1.8f;
@@ -31,7 +33,14 @@ public class GameManager : Singleton<GameManager>
     {
         mapGenaretor.GenerateMap();
     }
-
+    public void Restart()
+    {
+        OnRestart.Invoke();
+    }
+    public void ResetMineHits()
+    {
+        MineshitThisGame = 0;
+    }
     public void Onclickable(GameObject clickable)
     { 
         var minedata = clickable.GetComponent<MineData>();
