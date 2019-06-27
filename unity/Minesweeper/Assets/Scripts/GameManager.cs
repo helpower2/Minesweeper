@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class GameManager : Singleton<GameManager>
 {
+
     public GenarateMap mapGenaretor;
     public ClickManager clickManager;
     public ScoreManager scoreManager;
@@ -79,16 +80,22 @@ public class GameManager : Singleton<GameManager>
         OnMineDataLeft.Invoke(minedata);
     }
 
+    /// <summary>
+    /// reveals minedata, the 0's and 1's
+    /// </summary>
+    /// <param name="mineData"></param>
     public void RevealMineData(MineData mineData)
     {
-        mineData.isRevealed = true;
-        mineData.UpdateGraphics();
+        mineData.Reveal();
         if (mineData.totalbombsNearby == 0)
         {
             mineData.showNullNeighbors();
         }
     }
 
+    /// <summary>
+    /// Reveals everything.
+    /// </summary>
     public void RevealAllMinedatas()
     {
         mapGenaretor.MineDatas.OfType<MineData>().ToList().ForEach((x) => { RevealMineData(x); });
@@ -97,6 +104,8 @@ public class GameManager : Singleton<GameManager>
     {
         RevealAllMinedatas();
     }
+
+    // sets the orthographic size of the camera.
     public void SetCamera()
     {
         mainCamare.orthographicSize = Mathf.Max(mapGenaretor.width, mapGenaretor.heigth) / camareScale;
@@ -111,6 +120,10 @@ public class GameManager : Singleton<GameManager>
         mineData.ToggleFlag();
     }
 
+    /// <summary>
+    /// Win function if everything is filled except the bombs.
+    /// </summary>
+    /// <param name="mineData"></param>
     public void WinFunction()
     {
         Debug.Log("win function");

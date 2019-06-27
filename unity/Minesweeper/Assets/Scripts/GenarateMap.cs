@@ -16,11 +16,15 @@ public class GenarateMap : Singleton<GenarateMap>
 
 
     [SerializeField] private MineData[,] mineDatas;
+
+    //property value, zelf weten wat je returnt
     public MineData[,] MineDatas { get { return mineDatas; }  set { mineDatas = value; } }
 
 
 
-
+    /// <summary>
+    /// generates the map and fills it
+    /// </summary>
     public void GenerateMap()
     {
 
@@ -30,6 +34,10 @@ public class GenarateMap : Singleton<GenarateMap>
         FillMap();
         onMapGenerate.Invoke();
     }
+
+    /// <summary>
+    /// makes and empty map without anything
+    /// </summary>
     public void GenerateEmptyMap()
     {
 
@@ -46,6 +54,10 @@ public class GenarateMap : Singleton<GenarateMap>
             }
         }
     }
+
+    /// <summary>
+    /// Fills the map with bombs
+    /// </summary>
     public void FillMap()
     {
         if (heigth * width <= bombCount) Debug.LogError("Too many bombs");
@@ -55,6 +67,10 @@ public class GenarateMap : Singleton<GenarateMap>
         }
         MineDatas.OfType<MineData>().ToList().ForEach((x) => { x.StartBombCount(); x.UpdateGraphics(); });
     }
+
+    /// <summary>
+    /// check if clickable is a bomb, then Invokes the function ActivateRandomeMine()
+    /// </summary>
     public void ActivateRandomeMine()
     {
         Vector2Int vec = new Vector2Int(Random.Range(0, heigth), Random.Range(0, width));

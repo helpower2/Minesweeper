@@ -13,15 +13,21 @@ public class MineData : MonoBehaviour
     public Vector2Int localPos;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+
     private void Awake()
     {
         spriteRenderer = transform.GetComponentInChildren<SpriteRenderer>();
     }
+
+    //starts the bomb count
     public void StartBombCount()
     {
         StartCoroutine(GetTotalbombsNearby());
     }
 
+    /// <summary>
+    /// checks if clickable is revealed or is a bomb, then reveal all neighbours
+    /// </summary>
     public void showNullNeighbors()
     {
         if (isBomb || totalbombsNearby != 0) return;
@@ -40,6 +46,10 @@ public class MineData : MonoBehaviour
         isRevealed = true;
         UpdateGraphics();
     }
+    /// <summary>
+    /// gets all neighbours
+    /// </summary>
+    /// <returns>neighbors</returns>
     public MineData[,] GetNeighbors()
     {
         var map = GenarateMap.Instance().MineDatas;
@@ -57,9 +67,13 @@ public class MineData : MonoBehaviour
         return temp;
     }
 
+    /// <summary>
+    /// gets the count of the total bombs nearby
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator GetTotalbombsNearby()
     {
-        yield return 0;
+        yield return 0;//waits 1 frame
         var map = GenarateMap.Instance().MineDatas;
         if (isBomb)
         {
@@ -92,6 +106,10 @@ public class MineData : MonoBehaviour
             UpdateGraphics();
         }
     }
+
+    /// <summary>
+    /// updates colors and sprites
+    /// </summary>
     public void UpdateGraphics()
     {
 
@@ -102,22 +120,28 @@ public class MineData : MonoBehaviour
         }
         if (!isRevealed)
         {
-            spriteRenderer.sprite = SpriteReverence._instance.NotRevealed;
+            spriteRenderer.sprite = SpriteReverence.Instance().NotRevealed;
             return;
         }
         if (isBomb)
         {
-            spriteRenderer.sprite = SpriteReverence._instance.Bomb;
+            spriteRenderer.sprite = SpriteReverence.Instance().Bomb;
             return;
+            //Debug.Log("Bomb");
         }
         else
         {
-            spriteRenderer.sprite = SpriteReverence._instance.sprites[totalbombsNearby];
+            spriteRenderer.sprite = SpriteReverence.Instance().sprites[totalbombsNearby];
 
             spriteRenderer.SetColor(Color.Lerp(Color.white, Color.red,(float) (totalbombsNearby / 5f)));
         }
     }
 
+
+    /// <summary>
+    /// all variables to minedata variables
+    /// </summary>
+    /// <param name="mineDataSave"></param>
     public void LoadMineDataSave(SaveFile.MineDataSave mineDataSave)
     {
         isBomb = mineDataSave.isBomb;
@@ -126,6 +150,9 @@ public class MineData : MonoBehaviour
         UpdateGraphics();
     }
 
+    /// <summary>
+    /// toggles the flag / updates the sprites / and decrease or increase the flag count
+    /// </summary>
     public void ToggleFlag()
     {
         hasFlag = !hasFlag;
